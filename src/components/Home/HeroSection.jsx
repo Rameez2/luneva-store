@@ -49,12 +49,12 @@ const HeroSection = () => {
             <div
               className={`flex flex-col sm:flex-row gap-4 justify-center items-center transform transition-all duration-1000 delay-1000 ${isVisible ? "translate-y-0 opacity-100" : "translate-y-10 opacity-0"}`}
             >
-              <button className="bg-white text-purple-600 hover:bg-yellow-300 hover:text-purple-700 px-8 py-4 text-lg font-semibold shadow-2xl hover:shadow-yellow-300/50 transition-all duration-300 hover:scale-110 group animate-pulse-slow rounded-lg flex items-center">
+              <button className="bg-white text-purple-600 hover:bg-yellow-300 hover:text-purple-700 px-8 py-4 text-lg font-semibold shadow-2xl hover:shadow-yellow-300/50 transition-all duration-300 hover:scale-110 group animate-pulse-slow rounded-lg flex items-center cursor-pointer">
                 <Zap className="mr-2 h-5 w-5 group-hover:animate-spin" />
                 Shop Collection
               </button>
 
-              <button className="border-2 border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg font-semibold transition-all duration-300 hover:scale-110 animate-glow rounded-lg">
+              <button className="border-2 border-white text-white hover:bg-white hover:text-purple-600 px-8 py-4 text-lg font-semibold transition-all duration-300 hover:scale-110 animate-glow rounded-lg cursor-pointer">
                 View Deals
               </button>
             </div>

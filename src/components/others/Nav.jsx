@@ -1,12 +1,12 @@
 "use client"
 import Link from "next/link";
-import { Heart, Search, ShoppingBag, User } from "lucide-react"
+import { Heart, Search, ShoppingBag, LogIn, UserPlus, User } from "lucide-react"
 import { useState } from "react";
-
 
 const Nav = () => {
 
-  const [cartCount, setCartCount] = useState(2)
+  const [cartCount, setCartCount] = useState(2);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
   return (
@@ -62,14 +62,47 @@ const Nav = () => {
               />
             </div>
 
-            {[User, Heart].map((Icon, index) => (
-              <button
-                key={index}
-                className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 hover:scale-110 rounded-md"
-              >
-                <Icon className="h-5 w-5" />
-              </button>
-            ))}
+            {isLoggedIn ?
+              <>
+                <Link href="/profile">
+
+                  <button
+                    className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 hover:scale-110 rounded-md cursor-pointer"
+                  >
+                    <User className="h-5 w-5" />
+                  </button>
+                </Link>
+                <Link href="/profile">
+
+                  <button
+                    className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 hover:scale-110 rounded-md cursor-pointer"
+                  >
+                    <Heart className="h-5 w-5" />
+                  </button>
+                </Link>
+              </>
+              :
+              <>
+                {/* Login Button */}
+                <Link href="/login">
+                  <button className="hidden sm:flex items-center space-x-1 bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-600 hover:to-blue-600 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group cursor-pointer"
+                    onClick={() => setIsLoggedIn(true)}
+                  >
+                    <LogIn className="h-4 w-4 group-hover:animate-bounce" />
+                    <span>Login</span>
+                  </button>
+                </Link>
+
+                {/* Register Button */}
+                <Link href="/signup">
+                  <button className="hidden sm:flex items-center space-x-1 bg-gradient-to-r from-orange-400 to-yellow-500 hover:from-orange-500 hover:to-yellow-600 text-white font-medium px-4 py-2 rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 group cursor-pointer">
+                    <UserPlus className="h-4 w-4 group-hover:animate-spin" />
+                    <span>Register</span>
+                  </button>
+                </Link>
+              </>
+            }
+
 
             <Link href="/cart">
               <button className="p-2 text-gray-600 hover:text-purple-600 hover:bg-purple-50 transition-all duration-300 hover:scale-110 relative group rounded-md cursor-pointer">

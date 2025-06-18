@@ -1,59 +1,81 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Heart, ShoppingBag, Star } from "lucide-react"
+import { useEffect, useState } from "react";
 
 
 const FeaturedSection = () => {
+    const [featuredProducts, setFeaturedProducts] = useState([])
+    const [loading, setLoading] = useState(true)
+    const [error, setError] = useState(null)
 
-  const featuredProducts = [
-    {
-      id: 1,
-      name: "Minimalist Watch",
-      price: 299,
-      originalPrice: 399,
-      image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=400&h=400&fit=crop&crop=center",
-      rating: 4.8,
-      reviews: 124,
-      badge: "🔥 Hot",
-      discount: 25,
-      color: "from-orange-400 to-yellow-500",
-    },
-    {
-      id: 2,
-      name: "Leather Wallet",
-      price: 89,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&crop=center",
-      rating: 4.9,
-      reviews: 89,
-      badge: "✨ New",
-      color: "from-purple-400 to-indigo-500",
-    },
-    {
-      id: 3,
-      name: "Wireless Earbuds",
-      price: 199,
-      originalPrice: 249,
-      image: "https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=400&h=400&fit=crop&crop=center",
-      rating: 4.7,
-      reviews: 203,
-      discount: 20,
-      color: "from-blue-400 to-cyan-500",
-    },
-    {
-      id: 4,
-      name: "Canvas Backpack",
-      price: 129,
-      image: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=400&h=400&fit=crop&crop=center",
-      rating: 4.6,
-      reviews: 156,
-      badge: "⚡ Limited",
-      color: "from-green-400 to-emerald-500",
-    },
-  ]
 
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const res = await fetch("/data/products.json")
+
+                if (!res.ok) {
+                    throw new Error(`Failed to fetch products: ${res.status}`)
+                }
+
+                const data = await res.json()
+                console.log("Fetched products:", data)
+
+                // setFeaturedProducts(data)
+                // Set Featured only
+                const featuredProducts = data.filter((product) => product.isFeatured)
+
+                setFeaturedProducts(featuredProducts)
+            } catch (error) {
+                console.error("Error fetching products:", error)
+                setError(error.message)
+            } finally {
+                setTimeout(() => {
+
+                    setLoading(false)
+                }, 500);
+            }
+        }
+
+        fetchData()
+    }, [])
 
     const addToCart = () => {
         setCartCount((prev) => prev + 1)
+    }
+
+    if (loading) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="animate-spin rounded-full h-16 w-16 border-b-2 border-purple-600 mx-auto mb-4"></div>
+                    <p className="text-gray-600 text-lg">Loading products...</p>
+                </div>
+            </div>
+        )
+    }
+
+    if (error) {
+        return (
+            <div className="min-h-screen bg-gradient-to-br from-slate-50 via-white to-blue-50 flex items-center justify-center">
+                <div className="text-center">
+                    <div className="text-red-500 mb-4">
+                        <X className="h-16 w-16 mx-auto" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-gray-900 mb-2">Error Loading Products</h2>
+                    <p className="text-gray-600 mb-4">{error}</p>
+                    <button
+                        onClick={() => window.location.reload()}
+                        className="bg-purple-600 text-white px-6 py-2 rounded-lg hover:bg-purple-700 transition-colors"
+                    >
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        )
     }
 
     return (
